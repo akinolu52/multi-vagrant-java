@@ -47,7 +47,7 @@
     3.1 login into the database vms
 
     ```bash
-    vagrant up db01
+    vagrant ssh db01
     ```
 
     3.2 switch to root user
@@ -141,3 +141,47 @@
     nb the `-b` flag to git clone, is used to pick a specific branch
 
 4. Setup up the Memcache service
+
+    4.1 login into the database vms
+
+    ```bash
+    vagrant ssh mc01
+    ```
+
+    4.2 switch to root user
+
+    ```bash
+    sudo -i
+    ```
+
+    4.3 update yum and accept using `-y` flag
+
+    ```bash
+    yum update -y
+    ```
+
+    4.4 install epel-release (this gives access to more packages)
+
+    ```bash
+    yum install epel-release -y
+    ```
+
+    > [!IMPORTANT]
+    > For m1 arch use the following command: `sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm`
+
+    4.5 install Memcache
+
+    ```bash
+    yum install memcached -y
+    ```
+
+    3.6 start, enable and check the status of the Memcache service
+
+    ```bash
+    systemctl start memcached
+
+    systemctl enable memcached
+
+    systemctl status memcached
+    systemctl is-enabled memcached
+    ```

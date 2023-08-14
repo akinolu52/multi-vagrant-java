@@ -2,7 +2,7 @@
 
 #### Stack involved are
 
-Ngnix: Web service
+> Ngnix: Web service
 Tomcat: Application server
 RabbitMQ: Broker/Queuing Agent
 Memcache: DB Caching

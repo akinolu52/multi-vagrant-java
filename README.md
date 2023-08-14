@@ -1,13 +1,13 @@
 ## Steps to configure and setup multi-vagrant for deploying a JAVA project (with Database, MemCache, RabbitMQ, Tomcat, Ngnix)
 
-#### Stack involved are
+### Stack involved are
 
-> Ngnix: Web service
-> Tomcat: Application server
-RabbitMQ: Broker/Queuing Agent
-Memcache: DB Caching
-ElasticSearch: Indexing/Search service (RAM intensive)
-MySQL: SQL Database
+- Ngnix: Web service
+- Tomcat: Application server
+- RabbitMQ: Broker/Queuing Agent
+- Memcache: DB Caching
+- ElasticSearch: Indexing/Search service (RAM intensive)
+- MySQL: SQL Database
 
 1. Set up your multi-vagrant file for the various service then start the multi-vagrant
 
@@ -67,6 +67,8 @@ MySQL: SQL Database
     ```
 
     (for m1 arch)
+    > [!IMPORTANT]
+    > For m1 arch
 
     ```bash
     sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm

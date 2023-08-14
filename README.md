@@ -175,7 +175,7 @@
     yum install memcached -y
     ```
 
-    3.6 start, enable and check the status of the Memcache service
+    4.6 start, enable and check the status of the Memcache service
 
     ```bash
     systemctl start memcached
@@ -184,4 +184,23 @@
 
     systemctl status memcached
     systemctl is-enabled memcached
+    ```
+
+    > [!IMPORTANT]
+    > For m1 arch using fedora the following command
+
+    ```bash
+    firewall-cmd --add-port=11211/tcp --permanent
+    firewall-cmd --reload
+    sed -i 's/OPTIONS="-l 127.0.0.1"/OPTIONS=""/' /etc/sysconfig/memcached
+    sudo systemctl restart memcached
+
+    memcached -p 11211 -U 11111 -u memcached -d
+
+    systemctl enable firewalld
+    systemctl start firewalld
+    systemctl status firewalld
+    firewall-cmd --add-port=11211/tcp --permanent
+    firewall-cmd --reload
+    memcached -p 11211 -U 11111 -u memcache -d
     ```

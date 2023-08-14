@@ -68,7 +68,6 @@
     yum install epel-release -y
     ```
 
-    (for m1 arch)
     > [!IMPORTANT]
     > For m1 arch use the following command: `sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm`
 

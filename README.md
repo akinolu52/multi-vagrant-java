@@ -3,7 +3,7 @@
 #### Stack involved are
 
 > Ngnix: Web service
-Tomcat: Application server
+> Tomcat: Application server
 RabbitMQ: Broker/Queuing Agent
 Memcache: DB Caching
 ElasticSearch: Indexing/Search service (RAM intensive)

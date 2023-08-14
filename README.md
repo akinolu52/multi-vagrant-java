@@ -9,6 +9,8 @@
 - ElasticSearch: Indexing/Search service (RAM intensive)
 - MySQL: SQL Database
 
+### Steps involved includes:
+
 1. Set up your multi-vagrant file for the various service then start the multi-vagrant
 
     ```bash
@@ -68,11 +70,7 @@
 
     (for m1 arch)
     > [!IMPORTANT]
-    > For m1 arch
-
-    ```bash
-    sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
-    ```
+    > For m1 arch use the following command: `sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm`
 
     3.5 install git (for cloning the source repository) and maria-db (for the latest release of the database)
 

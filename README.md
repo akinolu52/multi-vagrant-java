@@ -204,3 +204,119 @@
     firewall-cmd --reload
     memcached -p 11211 -U 11111 -u memcache -d
     ```
+
+5. Setup up the RabbitMq server
+
+    5.1 login into the database vms
+
+    ```bash
+    vagrant ssh mc01
+    ```
+
+    5.2 switch to root user
+
+    ```bash
+    sudo -i
+    ```
+
+    5.3 update yum and accept using `-y` flag
+
+    ```bash
+    yum update -y
+    ```
+
+    5.4 install epel-release (this gives access to more packages)
+
+    ```bash
+    yum install epel-release -y
+    ```
+
+    > [!IMPORTANT]
+    > For m1 arch use the following command:
+
+    ```bash
+    sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
+
+    sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config
+
+    setenforce 0
+    ```
+
+    5.5 Install RabbitMq dependencies
+
+    ```bash
+    curl -s https://packagecloud.io/install/repositories/rabbitmq/erlang/script.rpm.sh | sudo bash
+   
+    yum clean all
+   
+    yum makecache
+   
+    yum install erlang -y
+    ```
+
+    5.6 Install RabbitMq server
+
+    ```bash
+    curl -s https://packagecloud.io/install/repositories/rabbitmq/rabbitmq-server/script.rpm.sh | sudo bash
+
+    yum install rabbitmq-server -y
+    ```
+
+    5.7 start, enable and check the status of the RabbitMq server
+
+    ```bash
+    systemctl start rabbitmq-server
+
+    systemctl enable rabbitmq-server
+
+    systemctl status rabbitmq-server
+    systemctl is-enabled rabbitmq-server
+    ```
+
+    5.8 Setup user for RabbitMq
+
+    ```bash
+    sh -c 'echo "[{rabbit, [{loopback_users, []}]}]." > c'
+
+    rabbitmqctl add_user test test
+
+    rabbitmqctl set_user_tags test administrator
+    ```
+
+    - this setup a config file and then it update the file with the loopback_user info
+  
+    - created a test user
+  
+    - gave the test user permissions.
+
+    > [!IMPORTANT]
+    > For m1 arch using fedora the following command
+
+    ```bash
+    firewall-cmd --add-port=5671/tcp --permanent
+    firewall-cmd --add-port=5672/tcp --permanent
+
+    firewall-cmd --reload
+    
+    sudo systemctl restart rabbitmq-server
+    ```
+
+    exit and restart server
+
+    ```bash
+    sudo systemctl restart rabbitmq-server
+    ```
+
+    - Enabling the firewall and allowing port 25672 to access the rabbitmq permanently
+
+    ```bash
+    systemctl start firewalld
+    
+    systemctl enable firewalld
+    
+    firewall-cmd --get-active-zones
+    
+    firewall-cmd --zone=public --add-port=25672/tcp --permanent
+    
+    firewall-cmd --reload
+    ```

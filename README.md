@@ -276,7 +276,7 @@
     5.8 Setup user for RabbitMq
 
     ```bash
-    sh -c 'echo "[{rabbit, [{loopback_users, []}]}]." > c'
+    sh -c 'echo "[{rabbit, [{loopback_users, []}]}]." > /etc/rabbitmq/rabbitmq.config'
 
     rabbitmqctl add_user test test
 

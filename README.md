@@ -1,8 +1,8 @@
-## Steps to configure and setup multi-vagrant for deploying a JAVA project (with Database, MemCache, RabbitMQ, Tomcat, Ngnix)
+## Steps to configure and setup multi-vagrant for deploying a JAVA project (with Database, MemCache, RabbitMQ, Tomcat, Nginx)
 
 ### Stack involved are
 
-- Ngnix: Web service
+- Nginx: Web service
 - Tomcat: Application server
 - RabbitMQ: Broker/Queuing Agent
 - Memcache: DB Caching
@@ -144,7 +144,7 @@
 
     nb the `-b` flag to git clone, is used to pick a specific branch
 
-4. Setup up the Memcache service
+4. Setup the Memcache service
 
     4.1 login into the Memcache vms
 
@@ -209,7 +209,7 @@
     memcached -p 11211 -U 11111 -u memcache -d
     ```
 
-5. Setup up the RabbitMq server
+5. Setup the RabbitMq server
 
     5.1 login into the RabbitMq vms
 
@@ -325,7 +325,7 @@
     firewall-cmd --reload
     ```
 
-6. Setup up the Tomcat
+6. Setup the Tomcat
 
     6.1 login into the database vms
 
@@ -432,3 +432,68 @@
     
     systemctl restart tomcat
     ```
+
+8. Setup the Nginx
+
+    8.1 login into the database vms
+
+    ```bash
+    vagrant ssh web01
+    ```
+
+    8.2 switch to root user
+
+    ```bash
+    sudo -i
+    ```
+
+    8.3 update yum and accept using `-y` flag
+
+    ```bash
+    apt update
+
+    apt upgrade
+    ```
+
+    8.4 install nginx
+
+    ```bash
+    apt install nginx -y
+    ```
+
+    8.5 Create Nginx conf file with below content
+
+    `vi /etc/nginx/sites-available/vproapp`
+
+    ```vim
+    upstream vproapp {
+        server app01:8080;
+    }
+    server {
+        listen 80;
+        location / {
+            proxy_pass http://vproapp;
+        }
+    }
+    ```
+
+    8.6 Remove default nginx conf and create a new link
+
+    ```bash
+    rm -rf /etc/nginx/sites-enabled/default
+    ```
+
+    Create link to activate website
+
+    ```bash
+    ln -s /etc/nginx/sites-available/vproapp /etc/nginx/sites-enabled/vproapp
+    ```
+
+    8.7 Restart Nginx
+
+    ```bash
+   systemctl restart nginx
+
+   systemctl status nginx
+   systemctl is-enabled nginx
+   ```

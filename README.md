@@ -402,3 +402,33 @@
     systemctl status tomcat
     systemctl is-enabled tomcat
     ```
+
+7. installing java project into Tomcat
+
+    7.1 download from git
+
+    ```bash
+    git clone -b local-setup https://github.com/devopshydclub/vprofile-project.git
+    ```
+
+    7.2 build code
+
+    ```bash
+    mvn install
+    ```
+
+    7.3 Deploy artifact
+
+    ```bash
+    systemctl stop tomcat
+
+    rm -rf /usr/local/tomcat8/webapps/ROOT
+   
+    cp target/vprofile-v2.war /usr/local/tomcat8/webapps/ROOT.war
+    
+    systemctl start tomcat
+    
+    chown tomcat.tomcat usr/local/tomcat8/webapps -R
+    
+    systemctl restart tomcat
+    ```

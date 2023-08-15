@@ -20,6 +20,10 @@
     1.1 The hostmanager plugin (extension) is used configure the hostname and the matching IP address to all the vms provisioned. (NB: this plugin should be used globally)
 
     ```bash
+    vagrant plugin install vagrant-hostmanager
+    ```
+
+    ```bash
      config.hostmanager.enabled = true 
      config.hostmanager.manage_host = true
     ```
@@ -69,7 +73,7 @@
     ```
 
     > [!IMPORTANT]
-    > For m1 arch use the following command: `sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm`
+    > For m1 arch use the following command: `sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm -y`
 
     3.5 install git (for cloning the source repository) and maria-db (for the latest release of the database)
 
@@ -142,7 +146,7 @@
 
 4. Setup up the Memcache service
 
-    4.1 login into the database vms
+    4.1 login into the Memcache vms
 
     ```bash
     vagrant ssh mc01
@@ -167,7 +171,7 @@
     ```
 
     > [!IMPORTANT]
-    > For m1 arch use the following command: `sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm`
+    > For m1 arch use the following command: `sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm -y`
 
     4.5 install Memcache
 
@@ -207,7 +211,7 @@
 
 5. Setup up the RabbitMq server
 
-    5.1 login into the database vms
+    5.1 login into the RabbitMq vms
 
     ```bash
     vagrant ssh mc01
@@ -235,7 +239,7 @@
     > For m1 arch use the following command:
 
     ```bash
-    sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
+    sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm -y
 
     sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config
 
@@ -319,4 +323,82 @@
     firewall-cmd --zone=public --add-port=25672/tcp --permanent
     
     firewall-cmd --reload
+    ```
+
+6. Setup up the Tomcat
+
+    6.1 login into the database vms
+
+    ```bash
+    vagrant ssh mc01
+    ```
+
+    6.2 switch to root user
+
+    ```bash
+    sudo -i
+    ```
+
+    6.3 update yum and accept using `-y` flag
+
+    ```bash
+    yum update -y
+    ```
+
+    6.4 install epel-release (this gives access to more packages)
+
+    ```bash
+    yum install epel-release -y
+    ```
+
+    > [!IMPORTANT]
+    > For m1 arch use the following command:
+
+    ```bash
+    sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm -y
+
+    sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config
+
+    setenforce 0
+    ```
+
+    6.5 Install Tomcat dependencies
+
+    ```bash
+    yum install java-1.8.0-openjdk -y
+
+    yum install git maven wget -y
+    ```
+
+    6.6 Download & extract Tomcat package
+
+    ```bash
+    cd /tmp/
+    
+    wget https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.37/bin/apache-tomcat-8.5.37.tar.gz
+
+    tar xzvf apache-tomcat-8.5.37.tar.gz
+    ```
+
+    6.7 create a user for tomcat and give it necessary permissions
+
+    ```bash
+    useradd --home-dir /usr/local/tomcat8 --shell /sbin/nologin tomcat
+
+    cp -r /tmp/apache-tomcat-8.5.37/* /usr/local/tomcat8/
+
+    chown -R tomcat.tomcat /usr/local/tomcat8
+    ```
+
+    6.8 update the tomcat service and restart daemon
+
+    6.9 start, enable and check the status of the tomcat service
+
+    ```bash
+    systemctl start tomcat
+
+    systemctl enable tomcat
+
+    systemctl status tomcat
+    systemctl is-enabled tomcat
     ```

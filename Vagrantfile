@@ -56,7 +56,6 @@ Vagrant.configure("2") do |config|
       vmware.gui = true
       vmware.allowlist_verified = true
     end
-
   end
   
 end

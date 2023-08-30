@@ -9,7 +9,7 @@
 - ElasticSearch: Indexing/Search service (RAM intensive)
 - MySQL: SQL Database
 
-### Steps involved includes:
+### Steps involved includes
 
 1. Set up your multi-vagrant file for the various service then start the multi-vagrant
 
